@@ -1,5 +1,76 @@
-# 10. 関数のスコープ：スコープがインデントで一目瞭然なの Python のいいところね
+# 17. 関数式 lambda：JS のアロー関数の醜い形
+def calc(n, func):
+    return func(n) # 引数として渡された関数のスイッチをポチッ()と押せる
+
+# lambda 引数: 返り値
+print(calc(10, lambda n: n * 2))
+
+# 16. 関数を引数として渡す
+def calc(n, func):
+    return func(n) # 引数として渡された関数のスイッチをポチッ()と押せる
+
+def double(n):
+    return n * 2
+
+print(calc(10, double)) # 関数を引数として渡す
+# 引数として渡すときその場でに関数定義もしてしまうにはどうするのだろう→無名関数
+
+# 15. 関数を丸括弧なしで使うと関数そのものが渡せる(当然だろ)
+def triple(n):
+    return n * 3
+
+print(triple(10))
+
+sanbai = triple # 関数を丸ごとコピー
+print(sanbai(10)) # -> 30
+
+# 14. globalキーワードは使うな、引数で渡せ
+def get_price(a, b, rate):
+    if a + b >= 3000:
+        rate = 1.2
+    return (a + b) * rate
+
+rate = 1.1
+# グローバル変数は呼び出すときに引数として渡そうね
+# (当たり前だろ。全部 let しかない世界なんだからやむを得ないだろ)
+get_price(3000, 7000, rate)
+get_price(300, 700, rate)
+
+# 13. (非推奨) globalキーワードで関数内でグローバル変数を明示的に参照
+def get_summed_price(a, b):
+    global rate # else の場合はグローバル変数のほうが参照される
+    if a + b >= 3000:
+        rate = 1.2
+    return (a + b) * rate
+
+rate = 1.1
+
+print(get_summed_price(3000, 7000)) # -> 1.2
+print(get_summed_price(300, 700)) # -> 1.1
+
+# 関数内でグローバル変数である rate に代入したので値が変わってしまう
+print(rate) # -> 1.2
+
+# 12. ローカル変数になる条件
+def get_summed_price2(a, b):
+    # if 文の片方の条件でしか rate は定義されていないので、もう片方の条件では rate は未定義扱いになる
+    # Python では関数内に変数定義があれば、条件分岐内でしか初期化されなかろうが問答無用でローカル変数扱いになる
+    if a + b >= 3000:
+        rate = 1.2
+    return (a + b) * rate
+
+# get_summed_price2(1000, 500) # -> UnboundLocalError: local variable 'rate' referenced before assignment
+
+# 11. 関数内に定義されていない変数は関数の外を探しに行く
 def get_taxed_price(raw):
+    result = raw * rate # 値が代入されていないのでスコープの外を探しに行く
+    return result
+
+rate = 1.1 # は？ 関数定義より下に書いてある変数が関数から参照されるのヤバすぎだろ
+print(get_taxed_price(100)) # -> 110
+
+# 10. 関数のスコープ：スコープがインデントで一目瞭然なの Python のいいところね
+def get_taxed_price2(raw):
     result = raw * 1.1
     return result
     # result はインデント内でスコープが閉じているローカル変数
@@ -70,3 +141,4 @@ print(double(10)) # -> 20
 len("Hello") # -> 5
 max(3, 6, 5) # -> 6
 min(5, 2, 7) # -> 2
+
