@@ -1,5 +1,99 @@
 x = None
 
+# 23. リスト2つから辞書的なものを作る
+keys = ["数学", "英語", "物理"]
+values = [62,    91,    73]
+
+zip(keys, values) # zip()：タプルのリストのようなものができる
+# -> [("数学", 62), ("英語", 91), ("物理", 73)]
+
+# zip から辞書を作る
+scores = {}
+for key, value in zip(keys, values):
+    scores[key] = value
+# scores = {'数学': 62, '英語': 91, '物理': 73}
+
+# 辞書でも使えるリスト内包表記でスマートに書く
+scores = {key: value for key, value in zip(keys, values)}
+# scores = {'数学': 62, '英語': 91, '物理': 73}
+
+# 22. 変数に変数を代入しても値ではなく参照だけしかコピーされない
+nums = [10, 20, 30]
+nums_backup = nums # バックアップを取っておこ〜♪
+nums[0] = 100 # そしたら元の値を変更しても大丈夫やろ♪
+
+print(nums_backup) # バックアップのほうも変更されてしまう……
+# -> [100, 20, 30]
+
+nums_backup = nums.copy() # これで参照ではなく値をコピーできる
+nums[0] = 100000
+print(nums_backup)
+# -> [100, 20, 30] (不変)
+
+# 21. データ型一覧
+# 変更可能 Mutable
+# - リスト
+# - 辞書
+# - 集合
+
+# 変更不可能 Immutable：辞書のキーと集合の要素になれるのはこれのみ
+# - タプル
+# - 文字列
+# - 集合(frozenset)
+# - 数値、真偽値、None
+
+# 20. 集合論
+engl_members = set(["太郎",       "三郎"])
+math_members = set(["太郎", "二郎"])
+
+# 和集合：受講してるのべ人数
+engl_members | math_members
+# -> {'三郎', '二郎', '太郎'}
+
+# 積集合：両方受講してる人
+engl_members & math_members
+# -> {'太郎'}
+
+# 差集合：英語だけ受講してる人
+engl_members - math_members
+# -> {'三郎'}
+# 数学だけ受講してる人
+math_members - engl_members
+# -> {'二郎'}
+
+# 19. 集合：JS の Set
+# 集合のリテラル表現
+members = {"太郎", "二郎", "三郎", "太郎"}
+
+# 要素の重複を無視する
+# 要素の順番が考慮されない
+print(members)
+# -> {'三郎', '二郎', '太郎'}
+
+# 要素の追加と削除
+members.add("四郎")
+members.remove("太郎")
+len(members)
+# -> 3
+
+# 要素を変更できない集合を返す
+frozen_members = frozenset(members)
+# frozen_members.add("四郎")
+# -> AttributeError: 'frozenset' object has no attribute 'add'
+
+# 18. 辞書をループさせるには
+scores = {"math": 41, "english": 87, "physics": 61}
+
+scores.keys()
+# -> dict_keys(['math', 'english', 'physics'])
+scores.values()
+# -> dict_values([41, 87, 61])
+scores.items() # タプルにする：JS のObject.entries()
+# -> dict_items([('math', 41), ('english', 87), ('physics', 61)])
+
+for key, value in scores.items(): # タプルをその場でアンパック
+    print(f"{key:8} {value:3}")
+
 # 17. 辞書
 scores = {"math": 41, "english": 87, "physics": 61}
 
@@ -85,7 +179,7 @@ taxed_prices = []
 for price in prices:
     taxed_prices.append(price * 1.1)
 
-# ワンライナー版：要素を受けての処理 for 要素 in 配列：倒置法！
+# ワンライナー版：要素を受けての処理 for 要素 in 配列 (倒置法！)
 prices_with_tax = [price * 1.1 for price in prices]
 # -> [110, 330, 220]
 
@@ -115,7 +209,7 @@ nums[8:2:-2] # 8以下2より大きいまでを後ろから2飛ばしで：後�
 nums[::-1] # 最初から最後まで後ろから1つづつ：.reverse() の非破壊版
 # -> [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
 
-# 8. スライス記法で破壊的変更
+# 8. スライス記法
 nums = [0, 1, 2, 3, 4, 5]
 
 nums[2:5] # インデックス2番目以降5番目未満
@@ -191,7 +285,7 @@ scores.clear() # .clear()：全削除
 scores = [60]
 
 scores.extend([78, 71]) # .extend()：複数要素追加
-scores = scores + [66, 98] # + で複数要素追加できる:JSと違う!
+scores = scores + [66, 98] # + で複数要素追加できる：JSと違う!
 # -> [60, 78, 71, 66, 98]
 
 scores = [10, 20] * 3 # * で3回繰り返すを表現できる：JSと違う！
