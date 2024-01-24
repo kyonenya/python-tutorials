@@ -1,4 +1,26 @@
-x = None
+# 25. 連想配列の並べ替え
+scores = [
+    {"name": "太郎", "english": 87, "math": 61},
+    {"name": "二郎", "english": 77, "math": 46},
+    {"name": "三郎", "english": 99, "math": 99}
+]
+
+# .sort() にプロパティをピックする関数を渡す
+scores.sort(key=lambda score: score['math'], reverse=True) # 数学の点数の大きい順に並び替え
+# scores = [{'name': '三郎', 'english': 99, 'math': 99}, {'name': '太郎', 'english': 87, 'math': 61}, {'name': '二郎', 'english': 77, 'math': 46}]
+
+# 24. 辞書を複数もつリスト(連想配列)の扱い：普通にループすりゃいいだけ
+scores = [
+    {"name": "太郎", "english": 87, "math": 61},
+    {"name": "二郎", "english": 77, "math": 46},
+    {"name": "三郎", "english": 99, "math": 99}
+]
+
+for score in scores:
+    # print(f"{score['name']} {score['english']:3} {score['math']:3}")
+    for value in score.values():
+        print(value, end=" ") # end：print() の改行を unset
+    print()
 
 # 23. リスト2つから辞書的なものを作る
 keys = ["数学", "英語", "物理"]
@@ -325,6 +347,4 @@ scores[1] = 100 # リストの要素に再代入
 # タプル ("JPY", 37, 140)
 # 辞書 {"math": 82, "english": 70}
 # 集合 {"Taro", "Jiro", "Saburo"}
-
-print(x)
 
